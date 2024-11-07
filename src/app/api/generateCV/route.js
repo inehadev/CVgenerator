@@ -1,7 +1,8 @@
 const Groq = require("groq-sdk");
+const {OpenAI}=require('openai')
 import { NextResponse } from 'next/server';
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 
 export  async function  POST(req, res)  {
@@ -45,9 +46,9 @@ export  async function  POST(req, res)  {
     },
   ];
 
-  const response = await groq.chat.completions.create({
+  const response = await openai.chat.completions.create({
     messages: messages,
-    model: "llama3-8b-8192",
+    model: 'gpt-3.5-turbo',
   });
 
   const messageContent =
