@@ -1,114 +1,375 @@
-import React from "react";
 
-const Page = () => {
+"use client"
+import React, { useState } from 'react';
+import axios from "axios"
+import { useRouter } from "next/navigation";
+
+const CVForm = () => {
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    phone: '',
+    skills: '',
+    jobTitle: '',
+    location: '',
+    linkedIn: '',
+    courseName: '',
+    educationStartDate: '',
+    educationEndDate: '',
+    employer: '',
+    jobSummary: '',
+    workStartDate: '',
+    workEndDate: '',
+    projectTitle: '',
+    projectSummary: '',
+    projectStartDate: '',
+    projectEndDate: '',
+    achievements: '',
+    education: [],
+  workExperience: [], 
+  projects: []
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+
+    const bodyParameter = {
+      fullname: `${formData.firstName} `,
+      jobTitle: formData.jobTitle,
+      skills: formData.skills.split(','), 
+      email: formData.email,
+      phoneNo: formData.phone,
+      location: formData.location,
+      linkedIn: formData.linkedIn,
+      education: formData.education.map(ed => ({
+        course: ed.courseName,
+        startDate: ed.startDate,
+        endDate: ed.endDate,
+      })),
+      workExperience: formData.workExperience.map(work => ({
+        employer: work.employer,
+        summary: work.jobSummary,
+      })),
+      projects: formData.projects.map(proj => ({
+        title: proj.title,
+        startDate: proj.startDate,
+        endDate: proj.endDate,
+        summary: proj.projectSummary,
+      })),
+      achievements: formData.achievements,
+    };
+
+    
+    const axiosheader = {
+        headers: {
+            "Accept": "application/json",
+        }
+    };
+
+    try {
+       
+        const response = await axios.post('http://localhost:3000/api/generateCV', bodyParameter, axiosheader);
+        
+        console.log('Response :', response.data);
+        
+        
+       
+        if (response.data.message) {
+          alert('CV generated successfully!');
+          const cvId = response.data.message._id; 
+          router.push(`/getCV/${cvId}`);
+        }
+
+    } catch (error) {
+        console.error('Error generating CV:', error);
+        alert('Failed to generate CV. Please try again.');
+    }
+};
+    
+
   return (
-    <div className="h-screen flex  justify-center items-center">
-      <div className="flex flex-col mt-10 h-[650px] mb-2  px-5 w-[550px]  border border-blue-700 rounded-md  border-opacity-25">
-        <div>
-          <h2 className=" m-3 text-center text-gray-500 text-3xl">Form</h2>
-        </div>
+    <div className=" flex justify-center items-center bg-gray-100">
+      <div className="bg-white w-full max-w-4xl p-6 rounded-lg shadow-lg">
+        <h2 className="text-3xl text-center text-gray-700 font-semibold mb-6">CV Form</h2>
+        <form onSubmit={handleSubmit}>
 
-        <div>
-          <div>
-            <p className=" ml-3 text-xl text-gray-500">Personal</p>
-            <div className="flex">
-              <div className="border border-gray-500 border-opacity-30 bg-white  mt-2 bg-opacity-35 rounded-md  h-9 m-2 w-[80%]">
+          {/* Personal Information Section */}
+          <section className="mb-6">
+            <h3 className="text-xl text-gray-600 font-semibold mb-3">Personal Information</h3>
+            <div className="grid  md:grid-cols-2 gap-4">
+              <div>
+                <label className=" text-gray-700">Full Name</label>
                 <input
                   type="text"
-                  className="bg-transparent px-5 focus:outline-none py-1 text-gray-600"
-                  placeholder="First Name"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  className="w-full p-2 mt-1 border rounded-md focus:outline-none "
+                  placeholder="John Doe"
+                  required
                 />
               </div>
-              <div className=" border border-gray-500 border-opacity-30 bg-white  mt-2  bg-opacity-35 rounded-md  h-9 m-2 w-[80%]">
-                <input
-                  type="text"
-                  className="bg-transparent px-5 focus:outline-none py-1 text-gray-600 "
-                  placeholder="Last Name"
-                />
-              </div>
-            </div>
-
-            <div className="flex">
-              <div className="border  border-gray-500 border-opacity-30 bg-white  mt-5  bg-opacity-35 rounded-md  text-gray-900 h-9 m-2 w-[80%] ">
-                <input
-                  type="phone"
-                  className="bg-transparent focus:outline-none px-5 py-1 text-gray-600"
-                  placeholder="Phone"
-                />
-              </div>
-              <div className="  border border-gray-500 bg-white  mt-5 border-opacity-30  bg-opacity-35 rounded-md  text-gray-900 h-9 m-2 w-[80%] ">
+              <div>
+                <label className="block text-gray-700">Email</label>
                 <input
                   type="email"
-                  className="bg-transparent px-5 py-1 focus:outline-none text-gray-600"
-                  placeholder="Email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full p-2 mt-1 border rounded-md focus:outline-none "
+                  placeholder="john@example.com"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">Phone Number</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="w-full p-2 mt-1 border rounded-md focus:outline-none "
+                  placeholder="123-456-7890"
+                  required
                 />
               </div>
             </div>
-          </div>
-        </div>
+          </section>
 
-        <div>
-          <p className=" ml-3 mt-2 text-xl text-gray-500">Work Experience</p>
-          <div className="flex">
-            <div className="border border-gray-500 border-opacity-30 bg-white  mt-2 bg-opacity-35 rounded-md  h-9 m-2 w-[80%]">
-              <input
-                type="text"
-                className="bg-transparent px-5 focus:outline-none py-1 text-gray-600"
-                placeholder="Job Title"
-              />
-            </div>
-            <div className=" border border-gray-500 border-opacity-30 bg-white  mt-2  bg-opacity-35 rounded-md  h-9 m-2 w-[80%]">
-              <input
-                type="text"
-                className="bg-transparent px-5 focus:outline-none py-1 text-gray-600"
-                placeholder="Employer"
-              />
-            </div>
-          </div>
+          {/* Skills Section */}
+          <section className="mb-6">
+            <h3 className="text-xl text-gray-600 font-semibold mb-3">Skills</h3>
+            <textarea
+              name="skills"
+              value={formData.skills}
+              onChange={handleChange}
+              className="w-full p-2 mt-1 border rounded-md focus:outline-none"
+              placeholder="JavaScript, React, Node.js"
+              rows="4"
+              required
+            />
+          </section>
 
-          <div className="flex">
-            <div className="border  border-gray-500 border-opacity-30 bg-white  mt-2  bg-opacity-35 rounded-md  text-gray-900 h-16 m-2 w-full ">
-              <input
-                type="text"
-                className="bg-transparent focus:outline-none px-5 py-1 text-gray-600"
-                placeholder="Summary"
-              />
+          {/* Job Title & Location Section */}
+          <section className="mb-6">
+            <h3 className="text-xl text-gray-600 font-semibold mb-3">Job Title & Location</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-gray-700">Job Title</label>
+                <input
+                  type="text"
+                  name="jobTitle"
+                  value={formData.jobTitle}
+                  onChange={handleChange}
+                  className="w-full p-2 mt-1 border rounded-md focus:outline-none "
+                  placeholder="Software Developer"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">Location</label>
+                <input
+                  type="text"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleChange}
+                  className="w-full p-2 mt-1 border rounded-md focus:outline-none "
+                  placeholder="New York, USA"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">LinkedIn</label>
+                <input
+                  type="url"
+                  name="linkedIn"
+                  value={formData.linkedIn}
+                  onChange={handleChange}
+                  className="w-full p-2 mt-1 border rounded-md focus:outline-none"
+                  placeholder="https://www.linkedin.com/in/yourprofile"
+                  required
+                />
+              </div>
             </div>
-          </div>
-        </div>
+          </section>
 
-        <div>
-          <p className=" ml-3 mt-2 text-xl text-gray-500">Skills </p>
-          <div className="flex">
-            <div className="border border-gray-500 border-opacity-30 bg-white   bg-opacity-35 rounded-md  h-16 m-2 w-full">
-              <input
-                type="text"
-                className="bg-transparent px-5 focus:outline-none py-1 text-gray-600"
-                placeholder=""
-              />
+          {/* Education Section */}
+          <section className="mb-6">
+            <h3 className="text-xl text-gray-600 font-semibold mb-3">Education</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-gray-700">Course Name</label>
+                <input
+                  type="text"
+                  name="courseName"
+                  value={formData.courseName}
+                  onChange={handleChange}
+                  className="w-full p-2 mt-1 border rounded-md focus:outline-none "
+                  placeholder="BSc Computer Science"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">Start Date</label>
+                <input
+                  type="date"
+                  name="educationStartDate"
+                  value={formData.educationStartDate}
+                  onChange={handleChange}
+                  className="w-full p-2 mt-1 border rounded-md focus:outline-none "
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">End Date</label>
+                <input
+                  type="date"
+                  name="educationEndDate"
+                  value={formData.educationEndDate}
+                  onChange={handleChange}
+                  className="w-full p-2 mt-1 border rounded-md focus:outline-none "
+                />
+              </div>
             </div>
-            {/* <div className=' border border-gray-500 border-opacity-30 bg-white  mt-2  bg-opacity-35 rounded-md  h-9 m-2 w-[80%]'><input type="text" className='bg-transparent px-5 focus:outline-none py-1' placeholder='Location' /></div> */}
-          </div>
-        </div>
+          </section>
 
-        <div>
-          <p className=" ml-3 mt-2 text-xl text-gray-500">Education </p>
-
-          <div className="">
-            <div className="border  border-gray-500 border-opacity-30 bg-white  mt-2  bg-opacity-35 rounded-md  text-gray-900 h-16 m-2 w-full ">
-              <input
-                type="text"
-                className="bg-transparent focus:outline-none px-5 py-1 text-gray-600"
-                placeholder=""
-              />
+          {/* Work Experience Section */}
+          <section className="mb-6">
+            <h3 className="text-xl text-gray-600 font-semibold mb-3">Work Experience</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-gray-700">Employer</label>
+                <input
+                  type="text"
+                  name="employer"
+                  value={formData.employer}
+                  onChange={handleChange}
+                  className="w-full p-2 mt-1 border rounded-md focus:outline-none "
+                  placeholder="ABC Corp."
+                  
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">Job Summary</label>
+                <textarea
+                  name="jobSummary"
+                  value={formData.jobSummary}
+                  onChange={handleChange}
+                  className="w-full p-2 mt-1 border rounded-md focus:outline-none "
+                  placeholder="Describe your job responsibilities."
+                  rows="4"
+                 
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">Start Date</label>
+                <input
+                  type="date"
+                  name="workStartDate"
+                  value={formData.workStartDate}
+                  onChange={handleChange}
+                  className="w-full p-2 mt-1 border rounded-md focus:outline-none "
+                 
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">End Date</label>
+                <input
+                  type="date"
+                  name="workEndDate"
+                  value={formData.workEndDate}
+                  onChange={handleChange}
+                  className="w-full p-2 mt-1 border rounded-md focus:outline-none "
+                />
+              </div>
             </div>
-              <button className="w-full border bg-gray-500 bg-opacity-45 text-gray-700 h-9 rounded-full">Submit</button>
+          </section>
+
+          {/* Projects Section */}
+          <section className="mb-6">
+            <h3 className="text-xl text-gray-600 font-semibold mb-3">Projects</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-gray-700">Project Title</label>
+                <input
+                  type="text"
+                  name="projectTitle"
+                  value={formData.projectTitle}
+                  onChange={handleChange}
+                  className="w-full p-2 mt-1 border rounded-md focus:outline-none "
+                  placeholder="Project X"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">Project Summary</label>
+                <textarea
+                  name="projectSummary"
+                  value={formData.projectSummary}
+                  onChange={handleChange}
+                  className="w-full p-2 mt-1 border rounded-md focus:outline-none "
+                  placeholder="Project description"
+                  rows="4"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">Start Date</label>
+                <input
+                  type="date"
+                  name="projectStartDate"
+                  value={formData.projectStartDate}
+                  onChange={handleChange}
+                  className="w-full p-2 mt-1 border rounded-md focus:outline-none "
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700">End Date</label>
+                <input
+                  type="date"
+                  name="projectEndDate"
+                  value={formData.projectEndDate}
+                  onChange={handleChange}
+                  className="w-full p-2 mt-1 border rounded-md focus:outline-none "
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* Achievements Section */}
+          <section className="mb-6">
+            <h3 className="text-xl text-gray-600 font-semibold mb-3">Achievements</h3>
+            <textarea
+              name="achievements"
+              value={formData.achievements}
+              onChange={handleChange}
+              className="w-full p-2 mt-1 border rounded-md focus:outline-none 0"
+              placeholder="Awards, Certifications"
+              rows="4"
+              required
+            />
+          </section>
+
+          {/* Submit Button */}
+          <div className="flex justify-end">
+            <button type="submit" className="bg-gray-500 text-white p-2 px-6 rounded-lg focus:outline-none ">
+              Submit
+            </button>
           </div>
-        
-        </div>
+        </form>
       </div>
     </div>
   );
 };
 
-export default Page;
+export default CVForm;
