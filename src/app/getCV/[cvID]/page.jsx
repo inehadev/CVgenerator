@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation';
+import { useParams  , useRouter} from 'next/navigation';
 import { LinkedinIcon, MailIcon, PhoneIcon, BriefcaseIcon, GraduationCapIcon, WrenchIcon, FolderIcon } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
@@ -11,89 +11,18 @@ import axios from "axios"
 
 
 
-
-// const cvData = {
-//   name: "Alex Johnson",
-//   contact: {
-//     linkedin: "linkedin.com/in/alexjohnson",
-//     email: "alex.johnson@example.com",
-//     phone: "+1 (555) 123-4567"
-//   },
-//   skills: ["JavaScript", "React", "Node.js", "Python", "SQL", "Git", "Agile Methodologies", "UI/UX Design", "RESTful APIs", "Cloud Computing (AWS)"],
-//   workExperience: [
-//     {
-//       company: "Tech Innovations Inc.",
-//       title: "Software Engineer",
-//       location: "San Francisco, CA",
-//       dateRange: "2020 - Present",
-//       responsibilities: [
-//         "Led development of a high-performance web application, resulting in a 40% increase in user engagement",
-//         "Implemented CI/CD pipeline, reducing deployment time by 60%",
-//         "Mentored junior developers, improving team productivity by 25%"
-//       ]
-//     },
-//     {
-//       company: "StartUp Solutions",
-//       title: "Junior Developer",
-//       location: "New York, NY",
-//       dateRange: "2018 - 2020",
-//       responsibilities: [
-//         "Developed and maintained client-facing web applications using React and Node.js",
-//         "Collaborated with UX team to implement responsive designs, improving mobile user satisfaction by 35%",
-//         "Optimized database queries, reducing average page load time by 2 seconds"
-//       ]
-//     }
-//   ],
-//   projects: [
-//     {
-//       title: "AI-Powered Task Manager",
-//       date: "2023",
-//       description: [
-//         "Developed a full-stack web application using React, Node.js, and OpenAI API",
-//         "Implemented machine learning algorithms to prioritize and categorize tasks",
-//         "Achieved over 1,000 active users within three months of launch"
-//       ]
-//     },
-//     {
-//       title: "E-commerce Platform",
-//       date: "2022",
-//       description: [
-//         "Built a comprehensive e-commerce solution using MERN stack",
-//         "Integrated payment gateway and inventory management system",
-//         "Implemented responsive design, ensuring seamless mobile experience"
-//       ]
-//     },
-//     {
-//       title: "Community Engagement App",
-//       date: "2021",
-//       description: [
-//         "Developed a mobile app using React Native for local community engagement",
-//         "Integrated real-time messaging and event management features",
-//         "Achieved 5,000+ downloads within the first month of launch"
-//       ]
-//     }
-//   ],
-//   education: [
-//     {
-//       degree: "Bachelor of Science in Computer Science",
-//       institution: "University of Technology",
-//       location: "Boston, MA",
-//       dateRange: "2014 - 2018",
-//       details: "Graduated with Honors, GPA: 3.8/4.0",
-//       modules: "Data Structures, Algorithms, Web Development, Machine Learning"
-//     }
-//   ]
-// }
-
 export default function CvPage() {
   const params=useParams();
    const[cvData , setcvData]=useState()
-  const [isSkillsOpen, setIsSkillsOpen] = useState(true)
-  const [isWorkExperienceOpen, setIsWorkExperienceOpen] = useState(true)
+  // const [isSkillsOpen, setIsSkillsOpen] = useState(true)
+  // const [isWorkExperienceOpen, setIsWorkExperienceOpen] = useState(true)
   const [isProjectsOpen, setIsProjectsOpen] = useState(true)
 
-  // const hasWorkExperience = cvData.workExperience && cvData.workExperience.length > 0
-  // const hasProjects = cvData.projects && cvData.projects.length > 0
+  const router = useRouter();
+  const { query } = router;
+  console.log(query)
+
+
 
 const  cvId  =  params.cvID;
 console.log("cvId",cvId)

@@ -30,7 +30,7 @@ const CVForm = () => {
   workExperience: [], 
   projects: []
   });
-
+  const [cvResponse, setCvResponse] = useState(null);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -39,32 +39,23 @@ const CVForm = () => {
     }));
   };
   const handleSubmit = async (e) => {
+
+
+  
     e.preventDefault();
     
 
     const bodyParameter = {
-      fullname: `${formData.firstName} `,
+      fullname: formData.firstName,
       jobTitle: formData.jobTitle,
       skills: formData.skills.split(','), 
       email: formData.email,
       phoneNo: formData.phone,
       location: formData.location,
       linkedIn: formData.linkedIn,
-      education: formData.education.map(ed => ({
-        course: ed.courseName,
-        startDate: ed.startDate,
-        endDate: ed.endDate,
-      })),
-      workExperience: formData.workExperience.map(work => ({
-        employer: work.employer,
-        summary: work.jobSummary,
-      })),
-      projects: formData.projects.map(proj => ({
-        title: proj.title,
-        startDate: proj.startDate,
-        endDate: proj.endDate,
-        summary: proj.projectSummary,
-      })),
+      education: formData.education,
+      workExperience: formData.workExperience,
+      projects: formData.projects,
       achievements: formData.achievements,
     };
 
@@ -82,11 +73,11 @@ const CVForm = () => {
         console.log('Response :', response.data);
         
         
-       
         if (response.data.message) {
           alert('CV generated successfully!');
-          const cvId = response.data.message._id; 
-          router.push(`/getCV/${cvId}`);
+          const cvData = response.data.message;  
+          setCvResponse(cvData)
+         
         }
 
     } catch (error) {
@@ -98,7 +89,16 @@ const CVForm = () => {
 
   return (
     <div className=" flex justify-center items-center bg-gray-100">
-      <div className="bg-white w-full max-w-4xl p-6 rounded-lg shadow-lg">
+      {cvResponse ? (
+        <>
+    
+          <h3 className="text-xl text-gray-600 font-semibold mb-3">Generated CV</h3>
+          <div className="flex  flex-col px-10 w-[60%] rounded-md py-5 border border-gray-500 shadow-md justify-center" dangerouslySetInnerHTML={{ __html: cvResponse }} />
+        </>
+
+      ): (
+        <>
+         <div className="bg-white w-full max-w-4xl p-6 rounded-lg shadow-lg">
         <h2 className="text-3xl text-center text-gray-700 font-semibold mb-6">CV Form</h2>
         <form onSubmit={handleSubmit}>
 
@@ -368,7 +368,11 @@ const CVForm = () => {
           </div>
         </form>
       </div>
-    </div>
+
+        </>
+
+      )}
+         </div>
   );
 };
 

@@ -115,7 +115,7 @@ Ensure the HTML is well-structured, with clear sections, and include inline CSS 
       {
         role: "user",
         content:
-          "Make sure to user purely html format into sv format and make sure it should eye apealing to the user , for styling you can use inline css , ",
+          "Make sure to user purely html format into cv format and make sure it should eye apealing to the user , for styling you can use inline css you can use divider for the header , workexperience  , project or skilll section , you can highlight the title of workexperience ,skills or education and make sure the ui will clean use gray background and poppins font  , ",
       },
     ];
 
@@ -132,16 +132,15 @@ Ensure the HTML is well-structured, with clear sections, and include inline CSS 
     const formattedOutput = htmlFormattedOutput.choices?.[0]?.message?.content;
     console.log(formattedOutput, ">>>>>>>.this is formatted oytput");
 
-      const cv = formattedOutput;
-      const newcv= await cv.save;
+    
 
 
     // console.log(messages);
 
     // console.log(cvSummary);
-    console.log(newcv)
+    // console.log(newcv)
 
-    return NextResponse.json({ message: cvSummary });
+    return NextResponse.json({ message: formattedOutput });
   } catch (error) {
     console.error(error);
     return NextResponse.error();
