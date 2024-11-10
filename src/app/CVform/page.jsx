@@ -31,6 +31,7 @@ const CVForm = () => {
   projects: ''
   });
   const [cvResponse, setCvResponse] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,7 +46,7 @@ const CVForm = () => {
   
     e.preventDefault();
     
-
+    setIsLoading(true); 
     const bodyParameter = {
     fullname:formData.fullName,
     email: formData.email,
@@ -81,8 +82,8 @@ const CVForm = () => {
 
     try {
        
-        const response = await axios.post('/api/generateCV', bodyParameter, axiosheader);
-        
+        const response = await axios.post('https://c-vgenerator-9wbn.vercel.app/api/generateCV', bodyParameter, axiosheader);
+       
         console.log('Response :', response.data);
         
         
@@ -97,8 +98,10 @@ const CVForm = () => {
         console.error('Error generating CV:', error);
         alert('Failed to generate CV. Please try again.');
     }
+    setIsLoading(false); 
 };
     
+{isLoading && <div>Loading...</div>}
 
   return (
     <div className=" flex justify-center items-center bg-gray-100">
