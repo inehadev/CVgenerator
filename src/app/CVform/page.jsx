@@ -9,7 +9,7 @@ const CVForm = () => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
-    phoneNo: '484854187487',
+    phoneNo: '',
     skills: '',
     jobTitle: '',
     location: '',
@@ -47,7 +47,7 @@ const CVForm = () => {
     
 
     const bodyParameter = {
-    fullName:formData.fullName,
+    fullname:formData.fullName,
     email: formData.email,
     phoneNo: formData.phoneNo,
     skills: formData.skills,
@@ -71,7 +71,7 @@ const CVForm = () => {
     projects: formData.projects
   
     };
-
+  console.log(bodyParameter)
     
     const axiosheader = {
         headers: {
@@ -105,7 +105,7 @@ const CVForm = () => {
       {cvResponse ? (
         <>
     
-          <h3 className="text-xl text-gray-600 font-semibold mb-3">Generated CV</h3>
+         
           <div className="flex  flex-col px-10 w-[60%] rounded-md py-5 border border-gray-500 shadow-md justify-center" dangerouslySetInnerHTML={{ __html: cvResponse }} />
         </>
 

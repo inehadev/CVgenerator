@@ -4,42 +4,41 @@ import { NextResponse } from "next/server";
 const dbConnect = require("../../../lib/db");
 const CV = require("../../models/cvModel");
 
-
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export async function POST(req, res) {
+  const body = await req.json();
 
-  console.log("Worked hetre")
+  console.log("body", body);
+
   try {
     // await dbConnect();
 
     const {
       fullname,
-    email,
-    phoneNo,
-    skills,
-    jobTitle,
-    location,
-    linkedIn,
-    courseName,
-    educationStartDate,
-    educationEndDate,
-    employer,
-    jobSummary,
-    workStartDate,
-    workEndDate,
-    projectTitle,
-    projectSummary,
-    projectStartDate,
-    projectEndDat,
-    achievements,
-    education,
-  workExperience, 
-  projects
-    } = await req.json();
+      email,
+      phoneNo,
+      skills,
+      jobTitle,
+      location,
+      linkedIn,
+      courseName,
+      educationStartDate,
+      educationEndDate,
+      employer,
+      jobSummary,
+      workStartDate,
+      workEndDate,
+      projectTitle,
+      projectSummary,
+      projectStartDate,
+      projectEndDat,
+      achievements,
+      education,
+      workExperience,
+      projects,
+    } = body;
 
-
-    console.log("data got");
     let messages = [];
     messages = [
       {
@@ -91,20 +90,45 @@ Based on the information below, create a CV summary that is suitable for a profe
       {
         role: "user",
         content: `
-                    Please format the output into the following sections with suitable content for each:
-                    
-                    - **Summary**: A brief, impactful paragraph that introduces the candidate, highlighting key strengths, objectives, and professional focus. Ensure this summary is around 50-60 words and conveys professionalism.
-                    
-                    - **Skills**: A bullet-point list of the candidate’s key skills, using phrases that present these as strengths relevant in a professional setting. Each skill should appear as a single bullet point and 15 words fort he skills.
-                    
-                    - **Work Experience** (if available): For each job, include:
-                        - Position Title: Company Name, Date Range
-                        - Bullet points for each role’s key accomplishments, specific contributions, and measurable results (e.g., "Led a team of 5 to increase revenue by 20% over six months").
-                        - Limit work experience to the last 3 roles if possible.
-                    
-                    - **Projects** (if no work experience is available): List notable projects with:
-                        - Project Title: Date Range
-                        - Bullet points for each project that highlight relevant skills, achievements,  or technologies used (e.g., "Developed a full-stack web application using React and Node.js, reaching over 1,000 active users within 3 months") and enhance project with 20 to 30 words.
+                   Please format the user’s details into the following sections with the provided guidelines:
+
+                  Please format the user’s details into a well-structured and professional CV, enhancing the input by adding relevant content where applicable, and ensuring it reads like a polished resume. The CV should be broken down into the following sections:
+
+                   - **Summary**: Craft a concise yet impactful professional summary of the candidate. Highlight their key strengths, core competencies, career goals, and significant achievements. This section should provide a snapshot of the candidate's professional journey, showcasing what they bring to the table. Make sure it’s about 50-60 words, emphasizing their most valuable skills and professional focus.
+                   
+                   - **Personal Info**: Present essential personal details in a clean, easy-to-read format. Include:
+                     - **Full Name**: The candidate's complete name.
+                     - **Contact Information**: Include email and phone number for easy contact.
+                     - **LinkedIn Profile**: If available, provide the LinkedIn URL.
+                     - **Location**: City or country of residence (if available). If not, mention "Not Provided."
+                   
+                   - **Skills**: Present a bulleted list of the candidate's most valuable skills. These should be a blend of **hard skills** (e.g., technical expertise, programming languages) and **soft skills** (e.g., leadership, communication). Include the following enhancements:
+                     - **Highlight the most marketable skills** based on the candidate’s experience and industry.
+                     - **Provide examples or context** where these skills were applied to drive success (e.g., "Proficient in React and Node.js, used to develop scalable web applications").
+                   
+                   - **Work Experience**: If the candidate has relevant work experience, break it down by each role. For each job, include:
+                     - **Position Title**: Clearly specify the job title.
+                     - **Company Name**: The employer's name.
+                     - **Dates of Employment**: The duration of employment (start and end dates).
+                     - **Key Responsibilities and Achievements**: Highlight the candidate’s major responsibilities, specific contributions, and key accomplishments in bullet points. Use strong action verbs and quantifiable results (e.g., “Led a team of 5 engineers, driving a 30% increase in app performance”).
+                   
+                   - **Projects**: If the candidate lacks formal work experience, focus on projects. For each project, include:
+                     - **Project Title**: The title or name of the project.
+                     - **Dates**: The duration of the project (start and end dates).
+                     - **Key Technologies Used**: Highlight the tech stack or methodologies used.
+                     - **Key Achievements and Results**: Describe the results, challenges overcome, and skills demonstrated. This could include measurable outcomes, such as user engagement or project completion rates. (e.g., “Developed a full-stack web application using React and Node.js, which gained over 1,000 active users within the first 3 months”).
+                   
+                   - **Achievements**: Showcase the candidate’s notable accomplishments outside of work and projects. This could include:
+                     - **Awards**: Any recognition received (e.g., “Employee of the Month,” “Top Sales Performer”).
+                     - **Certifications**: Any relevant certifications or training.
+                     - **Special Accomplishments**: Include any special accomplishments that differentiate the candidate from others (e.g., “Completed a 6-month UX design course with distinction”).
+                     - **Additional Context**: Add any other notable achievements or volunteer work that add value to the candidate’s profile (e.g., “Organized a charity event that raised $10,000 for a local cause”).
+                   
+                   Ensure the output is well-organized, visually appealing, and includes inline CSS to improve readability. Each section should be clearly defined with proper headings. The content should be written in a professional and polished manner, enhancing the input where necessary to create a compelling CV.
+
+
+                   Ensure that each section is well-structured and clear, with appropriate use of headings, bullet points, and concise content.
+
                     Please ensure the content is professional and ready to be used in a CV.`,
       },
     ];
@@ -147,8 +171,6 @@ Ensure the HTML is well-structured, with clear sections, and include inline CSS 
       },
     ];
 
-  
-
     const htmlFormattedOutput = await openai.chat.completions.create({
       messages: htmlConverterMessageArray,
       model: "gpt-3.5-turbo",
@@ -159,9 +181,6 @@ Ensure the HTML is well-structured, with clear sections, and include inline CSS 
     console.log(htmlFormattedOutput);
     const formattedOutput = htmlFormattedOutput.choices?.[0]?.message?.content;
     console.log(formattedOutput, ">>>>>>>.this is formatted oytput");
-
-    
-
 
     return NextResponse.json({ message: formattedOutput });
   } catch (error) {
