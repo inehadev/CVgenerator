@@ -9,7 +9,7 @@ const CVForm = () => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
-    phoneNo: '',
+    phoneNo: '484854187487',
     skills: '',
     jobTitle: '',
     location: '',
@@ -31,6 +31,7 @@ const CVForm = () => {
   projects: ''
   });
   const [cvResponse, setCvResponse] = useState(null);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -145,8 +146,7 @@ const CVForm = () => {
               <div>
                 <label className="block text-gray-700">Phone Number</label>
                 <input
-                  type="tel"
-                  name="phone"
+                  name="phoneNo"
                   value={formData.phoneNo}
                   onChange={handleChange}
                   className="w-full p-2 mt-1 border rounded-md focus:outline-none "
