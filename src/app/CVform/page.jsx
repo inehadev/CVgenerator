@@ -68,7 +68,7 @@ const CVForm = () => {
 
     try {
        
-        const response = await axios.post('https://c-vgenerator-one.vercel.app', bodyParameter, axiosheader);
+        const response = await axios.post('https://c-vgenerator-9wbn.vercel.app', bodyParameter, axiosheader);
         
         console.log('Response :', response.data);
         
