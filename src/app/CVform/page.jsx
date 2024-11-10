@@ -46,7 +46,7 @@ const CVForm = () => {
     
 
     const bodyParameter = {
-      fullname: formData.firstName,
+      fullname: formData.fullName,
       jobTitle: formData.jobTitle,
       skills: formData.skills.split(','), 
       email: formData.email,
@@ -68,7 +68,7 @@ const CVForm = () => {
 
     try {
        
-        const response = await axios.post('https://c-vgenerator-9wbn.vercel.app', bodyParameter, axiosheader);
+        const response = await axios.post('https://c-vgenerator-9wbn.vercel.app/api/generateCV', bodyParameter, axiosheader);
         
         console.log('Response :', response.data);
         

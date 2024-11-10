@@ -11,21 +11,6 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export async function POST(req, res) {
   
-  if (req.method === 'OPTIONS') {
-    return new Response(null, {
-      headers: {
-        'Access-Control-Allow-Origin': 'https://c-vgenerator-9wbn.vercel.app',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-      },
-    });
-  }
-
- 
-  const headers = {
-    'Access-Control-Allow-Origin': 'https://c-vgenerator-9wbn.vercel.app',
-  };
-
   try {
     await dbConnect();
 
