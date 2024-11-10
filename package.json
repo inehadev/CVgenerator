@@ -16,6 +16,7 @@
     "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "cors": "^2.8.5",
     "groq": "^3.63.0",
     "groq-sdk": "^0.7.0",
     "lucide-react": "^0.454.0",
