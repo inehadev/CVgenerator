@@ -9,7 +9,7 @@ const CVForm = () => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
-    phone: '',
+    phoneNo: '',
     skills: '',
     jobTitle: '',
     location: '',
@@ -26,9 +26,9 @@ const CVForm = () => {
     projectStartDate: '',
     projectEndDate: '',
     achievements: '',
-    education: [],
-  workExperience: [], 
-  projects: []
+    education:'',
+  workExperience:'', 
+  projects: ''
   });
   const [cvResponse, setCvResponse] = useState(null);
   const handleChange = (e) => {
@@ -46,17 +46,29 @@ const CVForm = () => {
     
 
     const bodyParameter = {
-      fullname: formData.fullName,
-      jobTitle: formData.jobTitle,
-      skills: formData.skills.split(','), 
-      email: formData.email,
-      phoneNo: formData.phone,
-      location: formData.location,
-      linkedIn: formData.linkedIn,
-      education: formData.education,
-      workExperience: formData.workExperience,
-      projects: formData.projects,
-      achievements: formData.achievements,
+    fullName:formData.fullName,
+    email: formData.email,
+    phoneNo: formData.phoneNo,
+    skills: formData.skills,
+    jobTitle: formData.jobTitle,
+    location: formData.location,
+    linkedIn: formData.linkedIn,
+    courseName: formData.courseName,
+    educationStartDate: formData.educationStartDate,
+    educationEndDate: formData.educationEndDate,
+    employer: formData.employer,
+    jobSummary: formData.jobSummary,
+    workStartDate: formData.workStartDate,
+    workEndDate: formData.workEndDate,
+    projectTitle: formData.projectTitle,
+    projectSummary: formData.projectSummary,
+    projectStartDate: formData.projectStartDate,
+    projectEndDate: formData.projectEndDate,
+    achievements: formData.achievements,
+    education:formData.education,
+    workExperience:formData.workExperience, 
+    projects: formData.projects
+  
     };
 
     
@@ -68,7 +80,7 @@ const CVForm = () => {
 
     try {
        
-        const response = await axios.post('https://c-vgenerator-9wbn.vercel.app/api/generateCV', bodyParameter, axiosheader);
+        const response = await axios.post('/api/generateCV', bodyParameter, axiosheader);
         
         console.log('Response :', response.data);
         
@@ -135,7 +147,7 @@ const CVForm = () => {
                 <input
                   type="tel"
                   name="phone"
-                  value={formData.phone}
+                  value={formData.phoneNo}
                   onChange={handleChange}
                   className="w-full p-2 mt-1 border rounded-md focus:outline-none "
                   placeholder="123-456-7890"

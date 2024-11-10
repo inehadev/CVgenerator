@@ -4,8 +4,6 @@ import { NextResponse } from "next/server";
 const dbConnect = require("../../../lib/db");
 const CV = require("../../models/cvModel");
 
-const cors = require('cors');
-
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -17,16 +15,27 @@ export async function POST(req, res) {
 
     const {
       fullname,
-      jobTitle,
-      skills,
-      email,
-      phoneNo,
-      location,
-      linkedIn,
-      education,
-      workExperience,
-      projects,
-      achievements,
+    email,
+    phoneNo,
+    skills,
+    jobTitle,
+    location,
+    linkedIn,
+    courseName,
+    educationStartDate,
+    educationEndDate,
+    employer,
+    jobSummary,
+    workStartDate,
+    workEndDate,
+    projectTitle,
+    projectSummary,
+    projectStartDate,
+    projectEndDat,
+    achievements,
+    education,
+  workExperience, 
+  projects
     } = await req.json();
 
 
@@ -62,6 +71,17 @@ Based on the information below, create a CV summary that is suitable for a profe
                     - Work Experience: ${workExperience}
                     - Projects: ${projects}
                     - Achievements: ${achievements}
+                    -courseName : ${courseName}
+                    - educationStartDate:${educationStartDate}
+                    - educationEndDate:${educationEndDate}
+                    - employer:${employer}
+                    - jobSummary:${jobSummary}
+                    - workStartDate:${workStartDate}
+                    - workEndDate:${workEndDate}
+                    - projectTitle:${projectTitle}
+                    - projectSummary:${projectSummary}
+                    - projectStartDate:${projectStartDate}
+                    - projectEndDat:${projectEndDat}
                 `,
       },
       {
