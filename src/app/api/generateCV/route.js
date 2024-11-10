@@ -10,9 +10,10 @@ const cors = require('cors');
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export async function POST(req, res) {
-  
+
+  console.log("Worked hetre")
   try {
-    await dbConnect();
+    // await dbConnect();
 
     const {
       fullname,
@@ -27,6 +28,9 @@ export async function POST(req, res) {
       projects,
       achievements,
     } = await req.json();
+
+
+    console.log("data got");
     let messages = [];
     messages = [
       {
@@ -119,7 +123,7 @@ Ensure the HTML is well-structured, with clear sections, and include inline CSS 
       {
         role: "user",
         content:
-          "Make sure to user purely html format into cv format and make sure it should eye apealing to the user , for styling you can use inline css you can use divider for the header , workexperience  , project or skilll section , you can highlight the title of workexperience ,skills or education and make sure the ui will clean use gray background and poppins font  , ",
+          "Make sure to user purely html format into cv format and make sure it should eye apealing to the user , for styling you can use inline css you can use divider for the header , workexperience  , project or skilll section , you can highlight the title of workexperience ,skills or education and make sure the ui will clean use gray background and poppins font, And Make sure don't try to add any inital like ```html , dont add ```html in ending too ",
       },
     ];
 
@@ -138,11 +142,6 @@ Ensure the HTML is well-structured, with clear sections, and include inline CSS 
 
     
 
-
-    // console.log(messages);
-
-    // console.log(cvSummary);
-    // console.log(newcv)
 
     return NextResponse.json({ message: formattedOutput });
   } catch (error) {
