@@ -32,6 +32,7 @@ const CVForm = () => {
   });
   const [cvResponse, setCvResponse] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,7 +47,7 @@ const CVForm = () => {
   
     e.preventDefault();
     
-    setIsLoading(true); 
+  
     const bodyParameter = {
     fullname:formData.fullName,
     email: formData.email,
@@ -79,8 +80,10 @@ const CVForm = () => {
             "Accept": "application/json",
         }
     };
-
+    
+    
     try {
+      setIsLoading(true); 
        
         const response = await axios.post('https://c-vgenerator-9wbn.vercel.app/api/generateCV', bodyParameter, axiosheader);
        
@@ -97,8 +100,11 @@ const CVForm = () => {
     } catch (error) {
         console.error('Error generating CV:', error);
         alert('Failed to generate CV. Please try again.');
+    }finally{
+      setIsLoading(false); 
+
     }
-    setIsLoading(false); 
+   
 };
     
 {isLoading && <div>Loading...</div>}
@@ -377,9 +383,17 @@ const CVForm = () => {
 
           {/* Submit Button */}
           <div className="flex justify-end">
+           {isLoading ? (
+             <button  className="bg-gray-500 text-white p-2 px-6 rounded-lg focus:outline-none ">
+            loading.....
+           </button>
+           ):(
             <button type="submit" className="bg-gray-500 text-white p-2 px-6 rounded-lg focus:outline-none ">
-              Submit
-            </button>
+            Submit
+          </button>
+           )
+            
+           }
           </div>
         </form>
       </div>

@@ -9,8 +9,8 @@ export default function LandingPage() {
         <div className="container flex h-14 items-center">
           <div className="mr-4 hidden md:flex">
             <Link className="mr-6 flex items-center space-x-2" href="/">
-              <FileText className="h-6 w-6" />
-              <span className="hidden font-bold ml-5 sm:inline-block">SkillfulCV</span>
+              <FileText className="h-6 w-6 ml-10" />
+              <span className="hidden font-bold  md:inline-block">SkillfulCV</span>
             </Link>
             <nav className="flex items-center space-x-6 text-sm font-medium">
               <Link href="/">Home</Link>
@@ -30,8 +30,11 @@ export default function LandingPage() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-                  Your Path to a Standout CV Begins Here
+                <h1 className="text-3xl font-bold   opacity-80 tracking-normal sm:text-4xl md:text-5xl lg:text-6xl/none">
+                  Your Path to a Standout <br/>
+                </h1>
+                <h1 className="text-2xl font-bold   opacity-80 tracking-normal sm:text-4xl md:text-5xl lg:text-6xl/none">
+                CV Begins Here <br/>
                 </h1>
                 <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
                   Create a CV that highlights your strengths and lands you opportunities.
