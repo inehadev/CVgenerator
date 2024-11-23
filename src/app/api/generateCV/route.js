@@ -86,6 +86,7 @@ export async function POST(req, res) {
     const response = await openai.chat.completions.create({
       messages: messages,
       model: "gpt-3.5-turbo",
+      timeout: 30000, 
     });
 
     const formattedOutput = response.choices?.[0]?.message?.content || "No CV generated";
